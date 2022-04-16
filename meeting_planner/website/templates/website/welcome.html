@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>welcome</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Welcome!{% endblock %}
+
+{% block content%}
     <h1>Welcome to My Meeting Planner!</h1>
     <p>
         This is my first demo application for
         <em>Django web framework</em>
         following <a href="https://www.pluralsight.com">This Course</a>
     </p>
+
+    <img src="{% static 'website/calendar.png' %}" width="300px">
 
     <h2>Meetings</h2>
     <ul>
@@ -23,5 +23,4 @@
         {% endfor %}
     </ul>
     <a href="{% url 'rooms' %}">Rooms list</a>
-</body>
-</html>
+{% endblock %}

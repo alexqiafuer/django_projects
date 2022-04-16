@@ -9,9 +9,6 @@
         <em>Django web framework</em>
         following <a href="https://www.pluralsight.com">This Course</a>
     </p>
-
-    <img src="{% static 'website/calendar.png' %}" width="300px">
-
     <h2>Meetings</h2>
     <ul>
         {% for meeting in meetings %}
@@ -23,4 +20,5 @@
         {% endfor %}
     </ul>
     <a href="{% url 'rooms' %}">Rooms list</a>
+    <a href="{% url 'new' %}">Add New Meeting</a>
 {% endblock %}

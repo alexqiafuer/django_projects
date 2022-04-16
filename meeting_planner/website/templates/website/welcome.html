@@ -12,8 +12,16 @@
         following <a href="https://www.pluralsight.com">This Course</a>
     </p>
 
-    <p>
-        We have scheduled {{meetings}} meetings in the database.
-    </p>
+    <h2>Meetings</h2>
+    <ul>
+        {% for meeting in meetings %}
+            <li>
+                <a href="{% url 'detail' meeting.id %}">
+                    {{meeting.title}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'rooms' %}">Rooms list</a>
 </body>
 </html>

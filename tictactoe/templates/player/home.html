@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
+ 
+{% block content %}
     <h1>welcome back, {{ user.username }} </h1>
     Below are your active games:
     <ul>
@@ -12,5 +9,4 @@
             <li>Game {{g.id}}: {{g.first_player}} vs {{g.second_player}} </li>
         { % endfor % }
     </ul>
-</body>
-</html>
+{% endblock %}

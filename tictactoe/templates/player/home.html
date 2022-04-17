@@ -5,8 +5,8 @@
     <h1>welcome back, {{ user.username }} </h1>
     Below are your active games:
     <ul>
-        { % for g in games % }
+        {% for g in games %}
             <li>Game {{g.id}}: {{g.first_player}} vs {{g.second_player}} </li>
-        { % endfor % }
+        {% endfor %}
     </ul>
 {% endblock %}

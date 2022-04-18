@@ -1,4 +1,3 @@
-from re import template
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
@@ -16,5 +15,5 @@ urlpatterns = [
         name="player_logout"
     ),
     path('new_invitation', new_invitation, name="player_new_invitation"),
-    path('accept_invitation/(?P<id>\d+)/$', accept_invitation, name="player_accept_invitation"),
+    path('accept_invitation/<int:id>', accept_invitation, name="player_accept_invitation"),
 ]

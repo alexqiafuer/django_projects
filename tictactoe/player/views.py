@@ -26,7 +26,7 @@ def new_invitation(request):
     return render(request, "player/new_invitation_form.html", {'form':form})
 
 @login_required()
-def accept_invitation(request):
+def accept_invitation(request, id):
     invitation = get_object_or_404(Invitation, pk=id)
     if not request.user == invitation.to_user:
         raise PermissionDenied

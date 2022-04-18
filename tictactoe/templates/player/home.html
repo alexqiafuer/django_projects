@@ -29,7 +29,7 @@
         {% if invitations %}
             <div class="list-group">
                 {% for inv in invitations %}
-                    <a class="list-group-item" href="">
+                    <a class="list-group-item" href="{% url 'player_accept_invitation' id=inv.id %}">
                         {{ inv.from_user.username }} has invited you to play together
                     </a>
                 {% endfor %}

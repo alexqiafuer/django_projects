@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gameplay',
     'player',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -127,6 +128,7 @@ LOGIN_REDIRECT_URL="player_home"
 LOGOUT_REDIRECT_URL="tictactoe_welcome"
 LOGIN_URL="player_login"
 
+CRISPY_TEMPLATE_PACK='bootstrap3'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

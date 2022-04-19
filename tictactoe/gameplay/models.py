@@ -25,8 +25,8 @@ class GamesQuerySet(models.QuerySet):
         )
 
 class Game(models.Model):
-    first_player = models.ForeignKey(User, related_name="game_player_1", on_delete=models.CASCADE)
-    second_player = models.ForeignKey(User, related_name="game_player_2", on_delete=models.CASCADE)
+    first_player = models.ForeignKey(User, related_name="games_first_player", on_delete=models.CASCADE)
+    second_player = models.ForeignKey(User, related_name="games_second_player", on_delete=models.CASCADE)
     start_time = models.DateTimeField(auto_now_add=True)
     last_active = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=1, default='F', choices=GAME_STATUS_CHOICES)
@@ -58,14 +58,14 @@ class Game(models.Model):
         x, y = move.x, move.y
         board = self.board()
         if (
-            (board[y][0] == board[y][1] == board[y][2]) or
-            (board[0][x] == board[1][x] == board[2][x]) or
-            (board[0][2] == board[1][1] == board[2][0])
+            (move == board[y][0] == board[y][1] == board[y][2]) or
+            (move == board[0][x] == board[1][x] == board[2][x]) or
+            (move == board[0][0] == board[1][1] == board[2][2]) or
+            (move == board[0][2] == board[1][1] == board[2][0])
         ):
             return "W" if move.by_first_player else 'L'
         if self.move_set.count() >= BOARD_SIZE ** 2:
             return 'D'
-        
         return 'S' if self.status == 'F' else 'F'
 
 
@@ -89,7 +89,7 @@ class Move(models.Model):
     def __eq__(self, other) -> bool:
         if not other:
             return False
-        return other.by_first_play == self.by_first_player
+        return other.by_first_player == self.by_first_player
     
     def save(self, *args, **kwargs):
         super(Move, self).save(*args, **kwargs)

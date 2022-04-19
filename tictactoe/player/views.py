@@ -10,8 +10,12 @@ from player.forms import InvitationForm
 def home(request):
     my_games = Game.objects.games_for_user(request.user)
     active_games = my_games.active()
+    finished_games = my_games.difference(active_games)
     invitations = request.user.invitation_received.all()
-    return render(request, "player/home.html", {'games': active_games, 'invitations': invitations})
+    return render(request, "player/home.html", 
+                {'active_games': active_games, 
+                'finished_games':finished_games, 
+                'invitations': invitations})
 
 
 @login_required()

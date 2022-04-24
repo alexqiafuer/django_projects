@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h1>Welcome to TODO List</h1>
 
 <form method='POST' action="">
@@ -8,3 +11,4 @@
 
 
 <p>Already a member? <a href=" {% url 'login' %} ">Sign in</a></p>
+{% endblock content %}

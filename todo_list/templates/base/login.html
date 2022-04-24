@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h1>Login</h1>
 
 <form method='POST' action="">
@@ -7,3 +10,4 @@
 </form>
 
 <p>Not a member yet? <a href=" {% url 'register' %} ">Register</a></p>
+{% endblock content %}

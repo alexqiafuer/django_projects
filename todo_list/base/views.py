@@ -81,3 +81,6 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task_delete'
     success_url = reverse_lazy('tasks')
+    def get_queryset(self):
+        owner = self.request.user
+        return self.model.objects.filter(user=owner)

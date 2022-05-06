@@ -175,7 +175,7 @@
       shippingInfo.state = form.state.value
       shippingInfo.zipcode = form.zipcode.value
     }
-    console.log()
+    console.log(userFormData, shippingInfo)
     var url = '/process-order/'
     fetch(url, {
       method: 'POST',
@@ -192,6 +192,10 @@
     .then((data) => {
       console.log('Successfully send data', data);
       alert('Transction completed');
+
+      cart = {}
+      document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
       window.location.href = " {% url 'store' %} "
     })
 

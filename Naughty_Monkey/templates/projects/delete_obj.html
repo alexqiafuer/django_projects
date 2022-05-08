@@ -1,0 +1,9 @@
+{% extends 'main.html' %} {% block content %}
+
+<form>
+  <p>Sure to Delet?</p>
+  <a href=" {% url 'projects' %} "><button>Cancel and Go Back</button></a>
+  <input type="submit" , value="Confirm Deletion" />
+</form>
+
+{% endblock content %}

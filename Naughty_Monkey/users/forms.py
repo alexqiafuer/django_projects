@@ -2,6 +2,8 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+from .models import Profile, Skill
+
 
 class MyUserCreationForm(UserCreationForm):
     class Meta:
@@ -18,3 +20,29 @@ class MyUserCreationForm(UserCreationForm):
             field.widget.attrs.update(
                 {'class': 'input'}
             )
+
+
+class ProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ['user', 'id', 'created']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+        for _, field in self.fields.items():
+            field.widget.attrs.update({'class':'input'})
+            
+
+
+class SkillForm(ModelForm):
+    class Meta:
+        model = Skill
+        fields = ['name', 'description']
+
+    def __init__(self, *args, **kwargs):
+        super(SkillForm, self).__init__(*args, **kwargs)
+
+        for _, field in self.fields.items():
+            field.widget.attrs.update({'class':'input'})
+            

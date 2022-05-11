@@ -1,20 +1,60 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
 
-from .models import Project
-from .forms import ProjectForm
+from .models import Project, Tag
+from .forms import ProjectForm, ReviewForm
 
 def projects(request):
-    projects = Project.objects.all()
+    search_query = ''
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
 
-    context = {'projects':projects}
+    tags = Tag.objects.filter(name__icontains=search_query)
+
+    projects = Project.objects.distinct().filter( 
+        Q(title__icontains=search_query) |
+        Q(description__icontains=search_query) |
+        Q(owner__name__icontains=search_query) |
+        Q(tags__in=tags)
+    )
+
+    page = request.GET.get('page')
+    project_per_page = 9
+    paginator = Paginator(projects, project_per_page)
+
+    try:
+        projects = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        projects = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        projects = paginator.page(page)
+
+    context = {'projects':projects, 'search_query': search_query, 'pages':paginator.page_range}
     return render(request, 'projects/projects.html', context)
 
 def project(request, pk):
     project = Project.objects.get(id=pk)
     tags = project.tags.all()
+    form = ReviewForm()
 
-    context = {'project': project, 'tags': tags}
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        review = form.save(commit=False)
+        review.project = project
+        review.owner = request.user.profile
+        review.save()
+        messages.success(request, 'Your comment was successfully submitted.')
+        project.updateVoteCount
+
+        return redirect('project', pk=project.id)
+
+
+    context = {'project': project, 'tags': tags, 'form': form}
     return render(request, 'projects/single-project.html', context)
 
 @login_required(login_url='user-login')

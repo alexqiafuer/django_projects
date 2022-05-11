@@ -5,8 +5,11 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 
+
 from .models import Profile
 from .forms import MyUserCreationForm, ProfileForm, SkillForm
+
+from .util import search
 
 def loginUser(request):
     # if request.user.is_authenticated:
@@ -17,7 +20,7 @@ def loginUser(request):
     if request.method != 'POST':
         return render(request, 'users/login_register.html')
 
-    username = request.POST['username']
+    username = request.POST['username'].lower()
     password = request.POST['password']
 
     try:
@@ -28,8 +31,10 @@ def loginUser(request):
     user = authenticate(request, username=username, password=password)
 
     if user is not None:
+        # print('logged in, next = ', request)
+        # print(request.GET)
         login(request, user)
-        return redirect('profiles')
+        return redirect(request.GET['next'] if 'next' in request.GET else 'user-account')
     else:
         messages.error(request, 'Wrong Username or Password')
         return redirect('user-login')
@@ -65,8 +70,10 @@ def registerUser(request):
 
 
 def profiles(request):
-    profiles = Profile.objects.all()
-    context = {'profiles': profiles}
+    
+    profiles, search_query = search(request)
+
+    context = {'profiles': profiles, 'search_query': search_query}
 
     return render(request, 'users/profiles.html', context)
 

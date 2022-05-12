@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 
 
 
-from .models import Profile
-from .forms import MyUserCreationForm, ProfileForm, SkillForm
+from .models import Profile, Message
+from .forms import MyUserCreationForm, ProfileForm, SkillForm, MessageForm
 
 from .util import search
 
@@ -157,3 +157,54 @@ def deleteSkill(request, pk):
 
     context = {'obj': skill}
     return render(request, 'delete_obj.html', context)
+
+
+@login_required(login_url='user-login')
+def inbox(request):
+    profile = request.user.profile
+    user_messages = profile.messages.all()
+
+    context = {'user_messages': user_messages}
+    return render(request, 'users/inbox.html', context)
+
+
+@login_required(login_url='user-login')
+def viewMessage(request, pk):
+    profile = request.user.profile
+    user_message = profile.messages.get(id=pk)
+    if not user_message.is_read:
+        user_message.is_read = True
+        user_message.save()
+
+    context = {'user_message': user_message}
+
+    return render(request, 'users/message.html', context)
+
+
+def createMessage(request, pk):
+    recipient = Profile.objects.get(id=pk)
+    form = MessageForm()
+    exclude = set()
+    if request.user.is_authenticated:
+        exclude = set(['name', 'email'])
+    
+    try:
+        sender = request.user.profile
+    except:
+        sender = None
+    
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = sender
+            message.recipient = recipient
+            if sender:
+                message.name = sender.name
+                message.email = sender.email
+            message.save()
+            return redirect('user-profile', pk=recipient.id)
+
+    context = {'form': form, 'recipient': recipient, 'exclude': exclude}
+
+    return render(request, 'users/message_form.html', context)

@@ -1,4 +1,5 @@
-A discord like social app
+A discord like social app that I followed in an online course. 
+Trying to tweak it to be a family study/discussion board (family wall).
 
 # Features
 * Users can register and login/logout
@@ -8,9 +9,10 @@ A discord like social app
 * Search by keywords
 
 # Study rooms Page
-img{}
+<img src="./introduction/familywall2.jpg">  
 
 # User Profile Page
-
+<img src="./introduction/familywall-profile.jpg">
 
 # Search by keywords
+<img src="./introduction/familywall-search.jpg">
